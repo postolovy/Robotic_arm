@@ -1,6 +1,6 @@
 #include <rclcpp/rclcpp.hpp> //main ros2 cpp library
 #include <std_msgs/msg/string.hpp> 
-#include <chrono> //for timer 
+#include <chrono> //library for timer 
 
 using namespace std::chrono_literals; 
 

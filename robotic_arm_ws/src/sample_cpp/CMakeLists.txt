@@ -12,7 +12,7 @@ find_package(std_msgs REQUIRED)
 add_executable(sample_publisher src/sample_publisher.cpp)
 ament_target_dependencies(sample_publisher rclcpp std_msgs)
 
-add_executable(sample_subsciber src/sample_subsciber.cpp)
+add_executable(sample_subsciber src/sample_subscriber.cpp)
 ament_target_dependencies(sample_subsciber rclcpp std_msgs)
 
 install(TARGETS

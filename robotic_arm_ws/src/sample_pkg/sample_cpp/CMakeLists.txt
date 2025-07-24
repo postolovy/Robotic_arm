@@ -9,7 +9,7 @@ find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 
-add_executable(sample_publisher src/sample_publisher.cpp)
+add_executable(sample_publisher src/sample_pkg/sample_publisher.cpp)
 ament_target_dependencies(sample_publisher rclcpp std_msgs)
 
 install(TARGETS

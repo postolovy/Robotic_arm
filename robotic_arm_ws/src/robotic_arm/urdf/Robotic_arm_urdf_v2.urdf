@@ -3,22 +3,22 @@
      Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
-  name="Robotic_arm_urdf">
+  name="Robotic_arm_urdf_v2">
   <link
     name="base_link">
     <inertial>
       <origin
-        xyz="-0.0409899402412761 0.11509269619067 0.1793435346801"
+        xyz="-4.16333634234434E-17 -0.000119031173936635 0.0194916688865922"
         rpy="0 0 0" />
       <mass
         value="0.273457775165078" />
       <inertia
         ixx="0.000550599522551074"
-        ixy="-3.98806876244997E-20"
-        ixz="-1.07968566012619E-18"
-        iyy="0.00100535104215319"
-        iyz="1.11948478177166E-08"
-        izz="0.00055131605565863" />
+        ixy="1.07721856439386E-18"
+        ixz="-2.63496805430799E-20"
+        iyy="0.00055131605565863"
+        iyz="-1.11948478176715E-08"
+        izz="0.00100535104215319" />
     </inertial>
     <visual>
       <origin
@@ -26,7 +26,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Robotic_arm_urdf/meshes/base_link.STL" />
+          filename="package://Robotic_arm_urdf_v2/meshes/base_link.STL" />
       </geometry>
       <material
         name="">
@@ -40,12 +40,12 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Robotic_arm_urdf/meshes/base_link.STL" />
+          filename="package://Robotic_arm_urdf_v2/meshes/base_link.STL" />
       </geometry>
     </collision>
   </link>
   <link
-    name="bicep_link">
+    name="bicep_Link">
     <inertial>
       <origin
         xyz="0.0176374765166666 -0.00318913226984843 0.0116731237424099"
@@ -66,7 +66,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Robotic_arm_urdf/meshes/bicep_link.STL" />
+          filename="package://Robotic_arm_urdf_v2/meshes/bicep_Link.STL" />
       </geometry>
       <material
         name="">
@@ -80,7 +80,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Robotic_arm_urdf/meshes/bicep_link.STL" />
+          filename="package://Robotic_arm_urdf_v2/meshes/bicep_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -88,12 +88,12 @@
     name="bicep_joint"
     type="revolute">
     <origin
-      xyz="-0.04099 -0.17922 0.1611"
+      xyz="0 0 0.0655"
       rpy="0 0 0" />
     <parent
       link="base_link" />
     <child
-      link="bicep_link" />
+      link="bicep_Link" />
     <axis
       xyz="0 0 1" />
     <limit
@@ -103,20 +103,20 @@
       velocity="0" />
   </joint>
   <link
-    name="arm1_link">
+    name="arm1_Link">
     <inertial>
       <origin
-        xyz="-0.00380465406326749 0.0631701667570544 -0.00400963052764294"
+        xyz="-0.00341203412018024 0.0566396542479189 0.0105493823668887"
         rpy="0 0 0" />
       <mass
         value="0.0713721391109546" />
       <inertia
-        ixx="0.000240012845563008"
-        ixy="1.35534931443173E-05"
-        ixz="-1.24388213175041E-07"
-        iyy="1.59429072582636E-05"
-        iyz="2.07136362406018E-06"
-        izz="0.000249620883951824" />
+        ixx="0.000240012845562927"
+        ixy="1.35534931443067E-05"
+        ixz="-1.2438821323787E-07"
+        iyy="1.59429072580896E-05"
+        iyz="2.07136362405968E-06"
+        izz="0.000249620883951732" />
     </inertial>
     <visual>
       <origin
@@ -124,7 +124,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Robotic_arm_urdf/meshes/arm1_link.STL" />
+          filename="package://Robotic_arm_urdf_v2/meshes/arm1_Link.STL" />
       </geometry>
       <material
         name="">
@@ -138,7 +138,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Robotic_arm_urdf/meshes/arm1_link.STL" />
+          filename="package://Robotic_arm_urdf_v2/meshes/arm1_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -146,12 +146,12 @@
     name="arm1_joint"
     type="revolute">
     <origin
-      xyz="0.040988 -0.049174 0.050067"
+      xyz="0.049445 -0.037317 0.056597"
       rpy="1.5708 0 -0.64651" />
     <parent
-      link="bicep_link" />
+      link="bicep_Link" />
     <child
-      link="arm1_link" />
+      link="arm1_Link" />
     <axis
       xyz="0 0 -1" />
     <limit
@@ -161,19 +161,19 @@
       velocity="0" />
   </joint>
   <link
-    name="arm2_link">
+    name="arm2_Link">
     <inertial>
       <origin
-        xyz="-0.0462757681406877 -0.00179719520817662 0.00283323944258318"
+        xyz="-0.0409235242070281 -0.00158726935108539 0.0133417345704065"
         rpy="0 0 0" />
       <mass
         value="0.059726655007088" />
       <inertia
-        ixx="9.42658984571273E-06"
+        ixx="9.42658984571275E-06"
         ixy="-4.06038789240042E-06"
-        ixz="-1.30204330068378E-06"
+        ixz="-1.30204330068377E-06"
         iyy="0.000116516464427784"
-        iyz="-4.62994059438566E-08"
+        iyz="-4.62994059438571E-08"
         izz="0.000119693202982731" />
     </inertial>
     <visual>
@@ -182,7 +182,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Robotic_arm_urdf/meshes/arm2_link.STL" />
+          filename="package://Robotic_arm_urdf_v2/meshes/arm2_Link.STL" />
       </geometry>
       <material
         name="">
@@ -196,7 +196,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Robotic_arm_urdf/meshes/arm2_link.STL" />
+          filename="package://Robotic_arm_urdf_v2/meshes/arm2_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -204,12 +204,12 @@
     name="arm2_joint"
     type="revolute">
     <origin
-      xyz="-0.0028592 0.13609 -0.025068"
+      xyz="-0.0078188 0.12976 0"
       rpy="-3.1416 0 0" />
     <parent
-      link="arm1_link" />
+      link="arm1_Link" />
     <child
-      link="arm2_link" />
+      link="arm2_Link" />
     <axis
       xyz="0 0 1" />
     <limit
@@ -219,7 +219,7 @@
       velocity="0" />
   </joint>
   <link
-    name="gripperSup_link">
+    name="gripperSup_Link">
     <inertial>
       <origin
         xyz="-0.0220647801149259 0.018304052270959 -0.000736346445310732"
@@ -228,7 +228,7 @@
         value="0.0107802680605055" />
       <inertia
         ixx="2.33827751040075E-06"
-        ixy="4.78392566136508E-07"
+        ixy="4.78392566136507E-07"
         ixz="9.93842932748418E-08"
         iyy="2.91870602078892E-06"
         iyz="-1.38100047709E-08"
@@ -240,7 +240,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Robotic_arm_urdf/meshes/gripperSup_link.STL" />
+          filename="package://Robotic_arm_urdf_v2/meshes/gripperSup_Link.STL" />
       </geometry>
       <material
         name="">
@@ -254,7 +254,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Robotic_arm_urdf/meshes/gripperSup_link.STL" />
+          filename="package://Robotic_arm_urdf_v2/meshes/gripperSup_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -262,29 +262,29 @@
     name="gripperSup_joint"
     type="fixed">
     <origin
-      xyz="-0.14874 -0.0058338 0.0019915"
+      xyz="-0.14338 -0.0056238 0.0125"
       rpy="1.5708 -0.64688 0.039202" />
     <parent
-      link="arm2_link" />
+      link="arm2_Link" />
     <child
-      link="gripperSup_link" />
+      link="gripperSup_Link" />
     <axis
       xyz="0 0 0" />
   </joint>
   <link
-    name="leftClaw_link">
+    name="leftClaw_Link">
     <inertial>
       <origin
-        xyz="-0.0203741570522345 0.0178294586240692 0.000408340722861944"
+        xyz="-0.0204707335139497 0.0177184914656234 0.000408340722861833"
         rpy="0 0 0" />
       <mass
         value="0.00659380087326398" />
       <inertia
-        ixx="7.04162676171799E-07"
-        ixy="6.1030935659097E-07"
-        ixz="1.38890410313616E-22"
-        iyy="8.95844690204476E-07"
-        iyz="-1.91905902112302E-22"
+        ixx="6.9753614266185E-07"
+        ixy="6.09231821646641E-07"
+        ixz="-9.05552744418159E-22"
+        iyy="9.02471223714428E-07"
+        iyz="6.46855239016468E-22"
         izz="1.56044456113669E-06" />
     </inertial>
     <visual>
@@ -293,7 +293,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Robotic_arm_urdf/meshes/leftClaw_link.STL" />
+          filename="package://Robotic_arm_urdf_v2/meshes/leftClaw_Link.STL" />
       </geometry>
       <material
         name="">
@@ -307,7 +307,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Robotic_arm_urdf/meshes/leftClaw_link.STL" />
+          filename="package://Robotic_arm_urdf_v2/meshes/leftClaw_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -318,9 +318,9 @@
       xyz="-0.03814 0.011889 0.003"
       rpy="0 0 0" />
     <parent
-      link="gripperSup_link" />
+      link="gripperSup_Link" />
     <child
-      link="leftClaw_link" />
+      link="leftClaw_Link" />
     <axis
       xyz="0 0 -1" />
     <limit
@@ -330,20 +330,20 @@
       velocity="0" />
   </joint>
   <link
-    name="rightClaw_link">
+    name="rightClaw_Link">
     <inertial>
       <origin
-        xyz="-0.0211022544751808 0.0140652972596869 0.000568478581755072"
+        xyz="-0.0367436624942855 -0.0038266189402424 0.000408340722861888"
         rpy="0 0 0" />
       <mass
-        value="0.00702806279088025" />
+        value="0.00659380087326398" />
       <inertia
-        ixx="5.82415357603243E-07"
-        ixy="5.74479258747562E-07"
-        ixz="-1.43183186887082E-21"
-        iyy="1.09041657885732E-06"
-        iyz="9.84344928938103E-22"
-        izz="1.63066355971528E-06" />
+        ixx="6.9753614266185E-07"
+        ixy="6.09231821646641E-07"
+        ixz="-9.05552744418159E-22"
+        iyy="9.02471223714428E-07"
+        iyz="6.46855239016468E-22"
+        izz="1.56044456113669E-06" />
     </inertial>
     <visual>
       <origin
@@ -351,7 +351,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Robotic_arm_urdf/meshes/rightClaw_link.STL" />
+          filename="package://Robotic_arm_urdf_v2/meshes/rightClaw_Link.STL" />
       </geometry>
       <material
         name="">
@@ -365,7 +365,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://Robotic_arm_urdf/meshes/rightClaw_link.STL" />
+          filename="package://Robotic_arm_urdf_v2/meshes/rightClaw_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -376,9 +376,9 @@
       xyz="-0.021867 0.033434 0.003"
       rpy="0 0 0" />
     <parent
-      link="gripperSup_link" />
+      link="gripperSup_Link" />
     <child
-      link="rightClaw_link" />
+      link="rightClaw_Link" />
     <axis
       xyz="0 0 -1" />
     <limit

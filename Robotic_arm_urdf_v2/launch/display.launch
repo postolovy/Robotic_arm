@@ -3,7 +3,7 @@
     name="model" />
   <param
     name="robot_description"
-    textfile="$(find Robotic_arm_urdf)/urdf/Robotic_arm_urdf.urdf" />
+    textfile="$(find Robotic_arm_urdf_v2)/urdf/Robotic_arm_urdf_v2.urdf" />
   <node
     name="joint_state_publisher_gui"
     pkg="joint_state_publisher_gui"
@@ -16,5 +16,5 @@
     name="rviz"
     pkg="rviz"
     type="rviz"
-    args="-d $(find Robotic_arm_urdf)/urdf.rviz" />
+    args="-d $(find Robotic_arm_urdf_v2)/urdf.rviz" />
 </launch>

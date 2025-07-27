@@ -3,7 +3,8 @@
      Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
 <robot
-  name="Robotic_arm_urdf">
+  name="Robotic_arm_urdf"> 
+  
   <link
     name="base_Link">
     <inertial>
@@ -26,7 +27,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotic_arm/meshes/base_Link.STL" />
+          filename="package://robotic_arm_description/meshes/base_Link.STL" />
       </geometry>
       <material
         name="">
@@ -40,7 +41,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotic_arm/meshes/base_Link.STL" />
+          filename="package://robotic_arm_description/meshes/base_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -66,7 +67,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotic_arm/meshes/bicep_Link.STL" />
+          filename="package://robotic_arm_description/meshes/bicep_Link.STL" />
       </geometry>
       <material
         name="">
@@ -80,7 +81,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotic_arm/meshes/bicep_Link.STL" />
+          filename="package://robotic_arm_description/meshes/bicep_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -99,8 +100,8 @@
     <limit
       lower="-6.28318530717959"
       upper="6.28318530717959"
-      effort="7.0"
-      velocity="0.7" />
+      effort="30.0"
+      velocity="10" />
   </joint>
   <link
     name="arm1_Link">
@@ -124,7 +125,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotic_arm/meshes/arm1_Link.STL" />
+          filename="package://robotic_arm_description/meshes/arm1_Link.STL" />
       </geometry>
       <material
         name="">
@@ -138,7 +139,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotic_arm/meshes/arm1_Link.STL" />
+          filename="package://robotic_arm_description/meshes/arm1_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -157,8 +158,8 @@
     <limit
       lower="-0.975325981771001"
       upper="1.000000000000001"
-      effort="7.0"
-      velocity="0.7" />
+      effort="30"
+      velocity="10" />
   </joint>
   <link
     name="arm2_Link">
@@ -182,7 +183,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotic_arm/meshes/arm2_Link.STL" />
+          filename="package://robotic_arm_description/meshes/arm2_Link.STL" />
       </geometry>
       <material
         name="">
@@ -196,7 +197,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotic_arm/meshes/arm2_Link.STL" />
+          filename="package://robotic_arm_description/meshes/arm2_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -215,8 +216,8 @@
     <limit
       lower="0"
       upper="1.000000000000001"
-      effort="7.0"
-      velocity="0.7" />
+      effort="30"
+      velocity="10" />
   </joint>
   <link
     name="gripperSup_Link">
@@ -240,7 +241,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotic_arm/meshes/gripperSup_Link.STL" />
+          filename="package://robotic_arm_description/meshes/gripperSup_Link.STL" />
       </geometry>
       <material
         name="">
@@ -254,7 +255,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotic_arm/meshes/gripperSup_Link.STL" />
+          filename="package://robotic_arm_description/meshes/gripperSup_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -293,7 +294,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotic_arm/meshes/leftClaw_Link.STL" />
+          filename="package://robotic_arm_description/meshes/leftClaw_Link.STL" />
       </geometry>
       <material
         name="">
@@ -307,7 +308,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotic_arm/meshes/leftClaw_Link.STL" />
+          filename="package://robotic_arm_description/meshes/leftClaw_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -326,8 +327,8 @@
     <limit
       lower="-1.5707963267949"
       upper="0"
-      effort="7.0"
-      velocity="0.7" />
+      effort="30"
+      velocity="10" />
   </joint>
   <link
     name="rightClaw_Link">
@@ -351,7 +352,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotic_arm/meshes/rightClaw_Link.STL" />
+          filename="package://robotic_arm_description/meshes/rightClaw_Link.STL" />
       </geometry>
       <material
         name="">
@@ -365,7 +366,7 @@
         rpy="0 0 0" />
       <geometry>
         <mesh
-          filename="package://robotic_arm/meshes/rightClaw_Link.STL" />
+          filename="package://robotic_arm_description/meshes/rightClaw_Link.STL" />
       </geometry>
     </collision>
   </link>
@@ -384,7 +385,8 @@
     <limit
       lower="0"
       upper="1.5707963267949"
-      effort="7.0"
-      velocity="0.7" />
+      effort="30"
+      velocity="10" />
+    <mimic joint="leftClaw_joint" multiplier="-1"/>
   </joint>
 </robot>

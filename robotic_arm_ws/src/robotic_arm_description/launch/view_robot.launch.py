@@ -4,7 +4,7 @@ from ament_index_python.packages import get_package_share_directory
 import os
 
 def generate_launch_description():
-    pkg_share = get_package_share_directory('robotic_arm')
+    pkg_share = get_package_share_directory('robotic_arm_description')
     urdf_file = os.path.join(pkg_share, 'urdf', 'Robotic_arm_urdf.urdf')
 
     return LaunchDescription([

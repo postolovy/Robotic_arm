@@ -3,6 +3,7 @@ from launch_ros.actions import Node
 from ament_index_python.packages import get_package_share_directory
 import os
 
+
 def generate_launch_description():
     pkg_share = get_package_share_directory('robotic_arm_description')
     urdf_file = os.path.join(pkg_share, 'urdf', 'Robotic_arm_urdf.urdf')
@@ -25,7 +26,8 @@ def generate_launch_description():
             package='rviz2',
             executable='rviz2',
             name='rviz2',
-            output='screen'
+            output='screen',
+            arguments=["-d", os.path.join(get_package_share_directory("robotic_arm_description"), "rviz", "view_robot.rviz")]
         ),
     ])
 

@@ -1,9 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0"?>
 <!-- This URDF was automatically created by SolidWorks to URDF Exporter! 
      Originally created by Stephen Brawner (brawner@gmail.com)
      Commit Version: 1.6.0-4-g7f85cfe  Build Version: 1.6.7995.38578
      For more information, please see http://wiki.ros.org/sw_urdf_exporter -->
-<robot name="Robotic_arm_urdf">
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="Robotic_arm_urdf">
 
   <!-- =========================
        BASE LINK
@@ -243,5 +243,15 @@
     <limit lower="0" upper="1.5707963267949" effort="30" velocity="10"/>
     <mimic joint="leftClaw_joint" multiplier="-1"/>
   </joint>
+
+
+  <!-- =========================
+       GAZEBO GAZEBO PLUGIN 
+  ============================ -->
+  <!-- <gazebo> 
+    <plugin filename="gz_ros2_control-system" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <parameters></parameters>
+    </plugin>
+  </gazebo> -->
 
 </robot>

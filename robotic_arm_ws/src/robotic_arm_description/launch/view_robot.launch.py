@@ -1,12 +1,16 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.substitutions import Command
+from launch_ros.parameter_descriptions import ParameterValue
 from ament_index_python.packages import get_package_share_directory
 import os
 
 
 def generate_launch_description():
     pkg_share = get_package_share_directory('robotic_arm_description')
-    urdf_file = os.path.join(pkg_share, 'urdf', 'Robotic_arm_urdf.urdf')
+    xacro_file = os.path.join(pkg_share, 'urdf', 'Robotic_arm.urdf.xacro')
+
+    robot_description_content = Command(['xacro ', xacro_file])
 
     return LaunchDescription([
         Node(
@@ -14,7 +18,7 @@ def generate_launch_description():
             executable='robot_state_publisher',
             name='robot_state_publisher',
             output='screen',
-            parameters=[{'robot_description': open(urdf_file).read()}]
+            parameters=[{'robot_description':  ParameterValue(robot_description_content, value_type=str)}]
         ),
         Node(
             package='joint_state_publisher_gui',

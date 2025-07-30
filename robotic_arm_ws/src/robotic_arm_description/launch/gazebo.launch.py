@@ -15,7 +15,7 @@ def generate_launch_description():
     pkg_share = get_package_share_directory("robotic_arm_description")
 
     # Path to the URDF file
-    xacro_file = os.path.join(pkg_share, "urdf", "Robotic_arm.urdf.xacro")
+    xacro_file = os.path.join(pkg_share, "urdf", "robotic_arm.urdf.xacro")
 
     robot_description_content = Command(['xacro ', xacro_file])
     

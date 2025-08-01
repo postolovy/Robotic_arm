@@ -1,9 +1,10 @@
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch.actions import DeclareLaunchArgument, SetEnvironmentVariable, IncludeLaunchDescription
-from launch.substitutions import Command, LaunchConfiguration
+from launch.substitutions import Command
 from launch_ros.parameter_descriptions import ParameterValue
 from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch.actions import TimerAction
 
 from pathlib import Path
 from ament_index_python.packages import get_package_share_directory
@@ -82,6 +83,8 @@ def generate_launch_description():
         gazebo_resource_path,
         robot_state_publisher_node,
         gazebo,
-        gz_spawn_entity,
+        # gz_spawn_entity,
+        # TimerAction(period=2.0, actions=[gazebo]),
+        TimerAction(period=5.0, actions=[gz_spawn_entity]),
         gz_ros2_bridge
     ])

@@ -49,8 +49,6 @@
             <param name="multiplier">-1</param>
         </joint>
 
-    </ros2_control>
+    </ros2_control> 
 
-    
-
-</robot> 
+</robot>  

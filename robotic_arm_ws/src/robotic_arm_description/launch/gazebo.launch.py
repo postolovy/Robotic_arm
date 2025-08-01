@@ -83,8 +83,8 @@ def generate_launch_description():
         gazebo_resource_path,
         robot_state_publisher_node,
         gazebo,
-        # gz_spawn_entity,
+        gz_spawn_entity,
         # TimerAction(period=2.0, actions=[gazebo]),
-        TimerAction(period=5.0, actions=[gz_spawn_entity]),
+        # TimerAction(period=5.0, actions=[gz_spawn_entity]),
         gz_ros2_bridge
     ])

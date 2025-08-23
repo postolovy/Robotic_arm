@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<robot name="robotic_arm"> 
+
+    <group name="arm">
+        <joint name="virtual_joint"/>
+
+        <joint name="bicep_joint"/>
+        <joint name="arm1_joint"/>
+        <joint name="arm2_joint"/>
+
+        <joint name="gripperSup_joint"/>
+
+    </group>
+
+    <group name="gripper">
+        <joint name="leftClaw_joint"/>
+        <joint name="rightClaw_joint"/>
+
+    </group>
+
+    <group_state name="name" group="arm"> 
+        <joint name="bicep_joint" value="0"/>
+        <joint name="arm1_joint"  value="0"/>
+        <joint name="arm2_joint"  value="0"/>
+    </group_state>
+
+    <group_state name="home" group="gripper"> 
+        <joint name="leftClaw_joint" value="0"/>
+        <joint name="rightClaw_joint" value="0"/>
+    </group_state>
+
+    <disable_collision link1="base_Link" link2="bicep_Link" reason="Adjacent"/>
+    <disable_collision link1="bicep_Link" link2="arm1_Link" reason="Adjacent"/>
+    <disable_collision link1="arm1_Link" link2="arm2_Link" reason="Adjacent"/>
+    <disable_collision link1="arm2_Link" link2="gripperSup_Link" reason="Adjacent"/>
+    <disable_collision link1="gripperSup_Link" link2="leftClaw_Link" reason="Adjacent"/>
+    <disable_collision link1="gripperSup_Link" link2="rightClaw_joint" reason="Adjacent"/>
+    <disable_collision link1="leftClaw_joint" link2="rightClaw_joint" reason="Mimic "/>
+
+</robot>

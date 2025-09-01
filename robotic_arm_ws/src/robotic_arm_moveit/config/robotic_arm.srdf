@@ -30,12 +30,12 @@
         <joint name="rightClaw_joint" value="0"/>
     </group_state>
 
-    <disable_collision link1="base_Link" link2="bicep_Link" reason="Adjacent"/>
-    <disable_collision link1="bicep_Link" link2="arm1_Link" reason="Adjacent"/>
-    <disable_collision link1="arm1_Link" link2="arm2_Link" reason="Adjacent"/>
-    <disable_collision link1="arm2_Link" link2="gripperSup_Link" reason="Adjacent"/>
-    <disable_collision link1="gripperSup_Link" link2="leftClaw_Link" reason="Adjacent"/>
-    <disable_collision link1="gripperSup_Link" link2="rightClaw_Link" reason="Adjacent"/>
-    <disable_collision link1="leftClaw_Link" link2="rightClaw_Link" reason="Mimic "/>
+    <disable_collisions link1="base_Link" link2="bicep_Link" reason="Adjacent"/>
+    <disable_collisions link1="bicep_Link" link2="arm1_Link" reason="Adjacent"/>
+    <disable_collisions link1="arm1_Link" link2="arm2_Link" reason="Adjacent"/>
+    <disable_collisions link1="arm2_Link" link2="gripperSup_Link" reason="Adjacent"/>
+    <disable_collisions link1="gripperSup_Link" link2="leftClaw_Link" reason="Adjacent"/>
+    <disable_collisions link1="gripperSup_Link" link2="rightClaw_Link" reason="Adjacent"/>
+    <disable_collisions link1="leftClaw_Link" link2="rightClaw_Link" reason="Mimic "/>
 
 </robot>

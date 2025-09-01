@@ -1,32 +1,53 @@
+# joint_limits.yaml
 default_velocity_scaling_factor: 0.1
 default_acceleration_scaling_factor: 0.1
 
-joint_limits: 
+joint_limits:
   bicep_joint:
+    has_position_limits: true
+    min_position: -3.14159265359      # = -PI
+    max_position:  3.14159265359      # =  PI
     has_velocity_limits: true
     max_velocity: 10.0
     has_acceleration_limits: true
     max_acceleration: 5.0
-    max_deceleration: -5.0 
+    max_deceleration: -5.0
+
   arm1_joint:
+    has_position_limits: true
+    min_position: -1.570796326795     # = -PI/2
+    max_position:  1.570796326795     # =  PI/2
     has_velocity_limits: true
     max_velocity: 10.0
     has_acceleration_limits: true
     max_acceleration: 5.0
     max_deceleration: -5.0
+
   arm2_joint:
+    has_position_limits: true
+    min_position: -0.001              # was 0.0 → allow tiny tolerance
+    max_position: 1.5707963267949     # = PI/2
     has_velocity_limits: true
     max_velocity: 10.0
     has_acceleration_limits: true
     max_acceleration: 5.0
     max_deceleration: -5.0
+
   leftClaw_joint:
+    has_position_limits: true
+    min_position: -1.570796326795     # = -PI/2
+    max_position:  0.0
     has_velocity_limits: true
     max_velocity: 10.0
     has_acceleration_limits: true
     max_acceleration: 5.0
     max_deceleration: -5.0
+
+  # rightClaw_joint mimics leftClaw_joint in URDF
   rightClaw_joint:
+    has_position_limits: true
+    min_position: -1.570796326795
+    max_position:  1.570796326795
     has_velocity_limits: true
     max_velocity: 10.0
     has_acceleration_limits: true

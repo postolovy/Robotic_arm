@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<robot name="robotic_arm"> 
+<robot name="robotic_arm_urdf"> 
 
     <group name="arm">
         <joint name="virtual_joint"/>
@@ -35,7 +35,7 @@
     <disable_collision link1="arm1_Link" link2="arm2_Link" reason="Adjacent"/>
     <disable_collision link1="arm2_Link" link2="gripperSup_Link" reason="Adjacent"/>
     <disable_collision link1="gripperSup_Link" link2="leftClaw_Link" reason="Adjacent"/>
-    <disable_collision link1="gripperSup_Link" link2="rightClaw_joint" reason="Adjacent"/>
-    <disable_collision link1="leftClaw_joint" link2="rightClaw_joint" reason="Mimic "/>
+    <disable_collision link1="gripperSup_Link" link2="rightClaw_Link" reason="Adjacent"/>
+    <disable_collision link1="leftClaw_Link" link2="rightClaw_Link" reason="Mimic "/>
 
 </robot>

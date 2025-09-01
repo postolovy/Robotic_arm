@@ -6,24 +6,29 @@ joint_limits:
     has_velocity_limits: true
     max_velocity: 10.0
     has_acceleration_limits: true
-    max_acceleration: 0.0
+    max_acceleration: 5.0
+    max_deceleration: -5.0 
   arm1_joint:
     has_velocity_limits: true
     max_velocity: 10.0
     has_acceleration_limits: true
-    max_acceleration: 0.0
+    max_acceleration: 5.0
+    max_deceleration: -5.0
   arm2_joint:
     has_velocity_limits: true
     max_velocity: 10.0
     has_acceleration_limits: true
-    max_acceleration: 0.0
+    max_acceleration: 5.0
+    max_deceleration: -5.0
   leftClaw_joint:
     has_velocity_limits: true
     max_velocity: 10.0
     has_acceleration_limits: true
-    max_acceleration: 0.0
+    max_acceleration: 5.0
+    max_deceleration: -5.0
   rightClaw_joint:
     has_velocity_limits: true
     max_velocity: 10.0
     has_acceleration_limits: true
-    max_acceleration: 0.0
+    max_acceleration: 5.0
+    max_deceleration: -5.0

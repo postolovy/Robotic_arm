@@ -44,6 +44,22 @@ rclcpp_components_register_node(sample_action_server
   EXECUTABLE sample_action_server_node
 )
 
+add_library(sample_action_client SHARED src/sample_action_client.cpp)
+target_include_directories(sample_action_client PRIVATE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+target_compile_definitions(sample_action_client
+  PRIVATE "SAMPLE_ACTION_CLIENT_CPP_BUILDING_DLL")
+ament_target_dependencies(sample_action_client
+  "robotic_arm_msgs"
+  "rclcpp"
+  "rclcpp_action"
+  "rclcpp_components")
+rclcpp_components_register_node(sample_action_client
+  PLUGIN "sample_cpp::SampleActionClient" 
+  EXECUTABLE sample_action_client_node
+)
+
 install(TARGETS
   sample_publisher
   sample_subsciber
@@ -55,6 +71,7 @@ install(TARGETS
 
 install(TARGETS
   sample_action_server
+  sample_action_client
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib

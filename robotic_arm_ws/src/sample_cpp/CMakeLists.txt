@@ -10,6 +10,8 @@ find_package(rclcpp REQUIRED)
 find_package(std_msgs REQUIRED)
 find_package(rcl_interfaces REQUIRED)
 find_package(robotic_arm_msgs REQUIRED)
+find_package(rclcpp_action REQUIRED)
+find_package(rclcpp_components REQUIRED)
 
 add_executable(sample_publisher src/sample_publisher.cpp)
 ament_target_dependencies(sample_publisher rclcpp std_msgs)
@@ -26,6 +28,22 @@ ament_target_dependencies(sample_service_server rclcpp robotic_arm_msgs)
 add_executable(sample_service_client src/sample_service_client.cpp)
 ament_target_dependencies(sample_service_client rclcpp robotic_arm_msgs) 
 
+add_library(sample_action_server SHARED src/sample_action_server.cpp)
+target_include_directories(sample_action_server PRIVATE
+  $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+  $<INSTALL_INTERFACE:include>)
+target_compile_definitions(sample_action_server
+  PRIVATE "SAMPLE_ACTION_SERVER_CPP_BUILDING_DLL")
+ament_target_dependencies(sample_action_server
+  "robotic_arm_msgs"
+  "rclcpp"
+  "rclcpp_action"
+  "rclcpp_components")
+rclcpp_components_register_node(sample_action_server 
+  PLUGIN "sample_cpp::SampleActionServer" 
+  EXECUTABLE sample_action_server_node
+)
+
 install(TARGETS
   sample_publisher
   sample_subsciber
@@ -33,6 +51,13 @@ install(TARGETS
   sample_service_server
   sample_service_client
   DESTINATION lib/${PROJECT_NAME}
+)
+
+install(TARGETS
+  sample_action_server
+  ARCHIVE DESTINATION lib
+  LIBRARY DESTINATION lib
+  RUNTIME DESTINATION lib
 )
 
 if(BUILD_TESTING)

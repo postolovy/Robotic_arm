@@ -3,7 +3,7 @@
 <robot name="robotic_arm_urdf"> 
 
     <group name="arm">
-        <joint name="virtual_joint"/>
+        <!-- <joint name="virtual_joint"/> -->
 
         <joint name="bicep_joint"/>
         <joint name="arm1_joint"/>

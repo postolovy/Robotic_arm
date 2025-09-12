@@ -12,6 +12,7 @@ find_package(rcl_interfaces REQUIRED)
 find_package(robotic_arm_msgs REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(rclcpp_components REQUIRED)
+find_package(moveit_ros_planning_interface REQUIRED)
 
 add_executable(sample_publisher src/sample_publisher.cpp)
 ament_target_dependencies(sample_publisher rclcpp std_msgs)
@@ -60,12 +61,16 @@ rclcpp_components_register_node(sample_action_client
   EXECUTABLE sample_action_client_node
 )
 
+add_executable(sample_moveit_interface src/sample_moveit_interface.cpp)
+ament_target_dependencies(sample_moveit_interface rclcpp moveit_ros_planning_interface) 
+
 install(TARGETS
   sample_publisher
   sample_subsciber
   sample_parameter
   sample_service_server
   sample_service_client
+  sample_moveit_interface
   DESTINATION lib/${PROJECT_NAME}
 )
 

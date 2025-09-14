@@ -29,7 +29,8 @@ public:
 private: 
     rclcpp_action::Server<robotic_arm_msgs::action::RoboticArmTask>::SharedPtr action_server_;
     std::shared_ptr<moveit::planning_interface::MoveGroupInterface> arm_move_group_, gripper_move_group_;
-    std::vector<double> arm_joint_goal_, gripper_joint_goal_;  
+    geometry_msgs::msg::Point target_position_;
+    std::vector<double> gripper_joint_goal_;  
 
     rclcpp_action::GoalResponse goalCallback(const rclcpp_action::GoalUUID& uuid, std::shared_ptr<const robotic_arm_msgs::action::RoboticArmTask::Goal> goal)
     { 
@@ -72,17 +73,26 @@ private:
         switch (goal_handle->get_goal()->task_number)
         {
         case 0:
-            arm_joint_goal_ = {0.0, 0.0, 0.0};
-            gripper_joint_goal_ = {-0.7, 0.7}; 
-            break;
+            // Home position
+            target_position_.x = 0.07;
+            target_position_.y = 0.07;
+            target_position_.z = 0.25;
+            gripper_joint_goal_ = {-0.7, 0.7};
+            break; 
         case 1: 
-            arm_joint_goal_ = {-2.50, -0.7,  0.40};
-            gripper_joint_goal_ = {0.0, 0.0};
+            // Pick position
+            target_position_.x = -0.1;
+            target_position_.y = 0.1;
+            target_position_.z = 0.1;
+            gripper_joint_goal_ = {0.0, 0.0}; 
             break;
         case 2: 
-            arm_joint_goal_ = {-1.57, 0.0, 0.0};
-            gripper_joint_goal_ = {0.0, 0.0};
-            break; 
+            // Place position
+            target_position_.x = -0.1;
+            target_position_.y = -0.1;
+            target_position_.z = 0.1;
+            gripper_joint_goal_ = {-0.7, 0.7};
+            break;
         default:
             RCLCPP_ERROR(get_logger(), "Unknown task number: %d", goal_handle->get_goal()->task_number);
             result->success = false;
@@ -93,12 +103,12 @@ private:
         arm_move_group_->setStartState(*arm_move_group_->getCurrentState()); 
         gripper_move_group_->setStartState(*gripper_move_group_->getCurrentState()); 
 
-        RCLCPP_INFO(get_logger(), "Setting arm joint goals: [%f, %f, %f]", 
-                    arm_joint_goal_[0], arm_joint_goal_[1], arm_joint_goal_[2]);
+        RCLCPP_INFO(get_logger(), "Setting arm target position: [%f, %f, %f]", 
+                    target_position_.x, target_position_.y, target_position_.z);
         RCLCPP_INFO(get_logger(), "Setting gripper joint goals: [%f, %f]", 
                     gripper_joint_goal_[0], gripper_joint_goal_[1]);
 
-        bool arm_within_bounds = arm_move_group_->setJointValueTarget(arm_joint_goal_); 
+        bool arm_within_bounds = arm_move_group_->setPositionTarget(target_position_.x, target_position_.y, target_position_.z);
         bool gripper_within_bounds = gripper_move_group_->setJointValueTarget(gripper_joint_goal_);
         
         if(!arm_within_bounds || !gripper_within_bounds){ 

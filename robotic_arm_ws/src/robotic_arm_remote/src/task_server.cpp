@@ -11,17 +11,17 @@ using namespace std::placeholders;
 
 namespace robotic_arm_remote
 {
-class TaskActionServer : public rclcpp::Node 
+class TaskServer : public rclcpp::Node 
 { 
 public: 
-    explicit TaskActionServer(const rclcpp::NodeOptions& options = rclcpp::NodeOptions()) : Node("TaskServer", options)
+    explicit TaskServer(const rclcpp::NodeOptions& options = rclcpp::NodeOptions()) : Node("TaskServer", options)
     { 
         action_server_ = rclcpp_action::create_server<robotic_arm_msgs::action::RoboticArmTask>(
             this, 
             "task_server", 
-            std::bind(&TaskActionServer::goalCallback, this, _1, _2), 
-            std::bind(&TaskActionServer::cancelCallback, this, _1), 
-            std::bind(&TaskActionServer::acceptedCallback, this, _1)
+            std::bind(&TaskServer::goalCallback, this, _1, _2), 
+            std::bind(&TaskServer::cancelCallback, this, _1), 
+            std::bind(&TaskServer::acceptedCallback, this, _1)
         );
         
         RCLCPP_INFO(rclcpp::get_logger("rclcpp"), "Starting the Task Action Server"); 
@@ -53,7 +53,7 @@ private:
 
     void acceptedCallback(const std::shared_ptr<rclcpp_action::ServerGoalHandle<robotic_arm_msgs::action::RoboticArmTask>> goal_handle)
     { 
-        std::thread{std::bind(&TaskActionServer::execute, this, _1), goal_handle}.detach(); 
+        std::thread{std::bind(&TaskServer::execute, this, _1), goal_handle}.detach(); 
     }
 
     void execute(const std::shared_ptr<rclcpp_action::ServerGoalHandle<robotic_arm_msgs::action::RoboticArmTask>> goal_handle)
@@ -76,26 +76,35 @@ private:
             gripper_joint_goal_ = {-0.7, 0.7}; 
             break;
         case 1: 
-            arm_joint_goal_ = {-1.14, -0.6,-0.7};
+            arm_joint_goal_ = {-2.50, -0.7,  0.40};
             gripper_joint_goal_ = {0.0, 0.0};
             break;
         case 2: 
-            arm_joint_goal_ = {-1.57, 0.0,-0.9};
+            arm_joint_goal_ = {-1.57, 0.0, 0.0};
             gripper_joint_goal_ = {0.0, 0.0};
             break; 
         default:
             RCLCPP_ERROR(get_logger(), "Unknown task number: %d", goal_handle->get_goal()->task_number);
+            result->success = false;
+            goal_handle->abort(result);
             return;
         }
 
         arm_move_group_->setStartState(*arm_move_group_->getCurrentState()); 
         gripper_move_group_->setStartState(*gripper_move_group_->getCurrentState()); 
 
+        RCLCPP_INFO(get_logger(), "Setting arm joint goals: [%f, %f, %f]", 
+                    arm_joint_goal_[0], arm_joint_goal_[1], arm_joint_goal_[2]);
+        RCLCPP_INFO(get_logger(), "Setting gripper joint goals: [%f, %f]", 
+                    gripper_joint_goal_[0], gripper_joint_goal_[1]);
+
         bool arm_within_bounds = arm_move_group_->setJointValueTarget(arm_joint_goal_); 
         bool gripper_within_bounds = gripper_move_group_->setJointValueTarget(gripper_joint_goal_);
         
         if(!arm_within_bounds || !gripper_within_bounds){ 
-            RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Target postions out of boundaries");
+            RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "Target positions out of boundaries");
+            result->success = false;
+            goal_handle->abort(result);
             return; 
         }
 
@@ -103,11 +112,17 @@ private:
         bool arm_plan_success = (arm_move_group_->plan(arm_plan) == moveit::core::MoveItErrorCode::SUCCESS); 
         bool gripper_plan_success = (gripper_move_group_->plan(gripper_plan) == moveit::core::MoveItErrorCode::SUCCESS); 
 
+        RCLCPP_INFO(get_logger(), "Planning results - Arm: %s, Gripper: %s", 
+                    arm_plan_success ? "SUCCESS" : "FAILED",
+                    gripper_plan_success ? "SUCCESS" : "FAILED");
+
         if(arm_plan_success && gripper_plan_success){ 
             arm_move_group_->move(); 
             gripper_move_group_->move();
         } else { 
             RCLCPP_ERROR(rclcpp::get_logger("rclcpp"), "One or more planners failed");
+            result->success = false;
+            goal_handle->abort(result);
             return; 
         }
 
@@ -117,4 +132,4 @@ private:
 };
 } 
 
-RCLCPP_COMPONENTS_REGISTER_NODE(robotic_arm_remote::TaskActionServer)
+RCLCPP_COMPONENTS_REGISTER_NODE(robotic_arm_remote::TaskServer)

@@ -48,7 +48,7 @@ class PickIntentHandler(AbstractRequestHandler):
 
         handler_input.response_builder.speak(speech_text).set_card(
             SimpleCard("Pick", speech_text)).set_should_end_session(
-            True)
+            False)
         
         goal = RoboticArmTask.Goal()
         goal.task_number = 1
@@ -58,7 +58,7 @@ class PickIntentHandler(AbstractRequestHandler):
 class PlaceIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
-        return is_intent_name("SleepIntent")(handler_input)
+        return is_intent_name("PlaceIntent")(handler_input)
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
@@ -66,28 +66,46 @@ class PlaceIntentHandler(AbstractRequestHandler):
 
         handler_input.response_builder.speak(speech_text).set_card(
             SimpleCard("Place", speech_text)).set_should_end_session(
-            True)
+            False)
         
         goal = RoboticArmTask.Goal()
         goal.task_number = 2
         action_client.send_goal_async(goal)
         return handler_input.response_builder.response
     
-class WakeIntentHandler(AbstractRequestHandler):
+class HomeIntentHandler(AbstractRequestHandler):
     def can_handle(self, handler_input):
         # type: (HandlerInput) -> bool
-        return is_intent_name("WakeIntent")(handler_input)
+        return is_intent_name("HomeIntent")(handler_input)
 
     def handle(self, handler_input):
         # type: (HandlerInput) -> Response
         speech_text = "I am ready!"
 
         handler_input.response_builder.speak(speech_text).set_card(
-            SimpleCard("Wake", speech_text)).set_should_end_session(
-            True)
+            SimpleCard("Home", speech_text)).set_should_end_session(
+            False)
         
         goal = RoboticArmTask.Goal()
         goal.task_number = 0
+        action_client.send_goal_async(goal)
+        return handler_input.response_builder.response
+    
+class SleepIntentHandler(AbstractRequestHandler):
+    def can_handle(self, handler_input):
+        # type: (HandlerInput) -> bool
+        return is_intent_name("SleepIntent")(handler_input)
+
+    def handle(self, handler_input):
+        # type: (HandlerInput) -> Response
+        speech_text = "See you, dear user!"
+
+        handler_input.response_builder.speak(speech_text).set_card(
+            SimpleCard("Sleep", speech_text)).set_should_end_session(
+            True)
+        
+        goal = RoboticArmTask.Goal()
+        goal.task_number = 3
         action_client.send_goal_async(goal)
         return handler_input.response_builder.response
     
@@ -110,7 +128,8 @@ skill_builder = SkillBuilder()
 skill_builder.add_request_handler(LaunchRequestHandler())
 skill_builder.add_request_handler(PickIntentHandler())
 skill_builder.add_request_handler(PlaceIntentHandler())
-skill_builder.add_request_handler(WakeIntentHandler())
+skill_builder.add_request_handler(HomeIntentHandler())
+skill_builder.add_request_handler(SleepIntentHandler())
 skill_builder.add_exception_handler(AllExceptionHandler())
 # Register your intent handlers to the skill_builder object
 

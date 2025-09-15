@@ -93,6 +93,13 @@ private:
             target_position_.z = 0.1;
             gripper_joint_goal_ = {-0.7, 0.7};
             break;
+        case 3: 
+            // Sleep position
+            target_position_.x = 0.07;
+            target_position_.y = 0.07;
+            target_position_.z = 0.25;
+            gripper_joint_goal_ = {0.0, 0.0};
+            break;
         default:
             RCLCPP_ERROR(get_logger(), "Unknown task number: %d", goal_handle->get_goal()->task_number);
             result->success = false;

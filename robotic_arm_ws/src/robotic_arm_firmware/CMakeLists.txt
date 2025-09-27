@@ -18,8 +18,14 @@ ament_target_dependencies(sample_serial_transmitter rclcpp std_msgs)
 target_include_directories(sample_serial_transmitter PUBLIC "${SERIAL_INCLUDE_DIRS}")
 target_link_libraries(sample_serial_transmitter  "${SERIAL_LDFLAGS}")
 
+add_executable(sample_serial_receiver src/sample_serial_receiver.cpp)
+ament_target_dependencies(sample_serial_receiver rclcpp std_msgs)
+target_include_directories(sample_serial_receiver PUBLIC "${SERIAL_INCLUDE_DIRS}")
+target_link_libraries(sample_serial_receiver  "${SERIAL_LDFLAGS}")
+
 install(TARGETS
   sample_serial_transmitter
+  sample_serial_receiver
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION bin

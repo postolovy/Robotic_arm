@@ -8,7 +8,7 @@ class SampleSubscriber : public rclcpp::Node
 public : 
     SampleSubscriber() : Node("sample_subscriber") 
     {
-        sub_ = create_subscription<std_msgs::msg::String>("topic_name", 10, std::bind(&SampleSubscriber::msgCallBack, this, _1)); //create subscriber
+        sub_ = create_subscription<std_msgs::msg::String>("sample_topic", 10, std::bind(&SampleSubscriber::msgCallBack, this, _1)); //create subscriber
     }
     
     void msgCallBack(std_msgs::msg::String::SharedPtr msg) const //callback function for subscriber

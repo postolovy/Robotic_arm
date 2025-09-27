@@ -9,7 +9,7 @@ class SamplePublisher : public rclcpp::Node //inherited Node class
     public: 
     SamplePublisher() : Node("sample_publisher"), counter_(0) //default constructor 
     { 
-        pub_ = create_publisher<std_msgs::msg::String>("topic_name", 10); //create publisher 
+        pub_ = create_publisher<std_msgs::msg::String>("sample_topic", 10); //create publisher 
         timer_ = create_wall_timer(1s, std::bind(&SamplePublisher::timerCallBack, this)); //create timer function and binds it to the class
 
         RCLCPP_INFO(get_logger(), "Publising at 1 Hz");  //console print

@@ -179,6 +179,5 @@ hardware_interface::return_type RoboticArmInterface::write(const rclcpp::Time & 
     prev_position_commands_ = position_commands_; 
     return hardware_interface::return_type::OK;
 }
-
 }
 

@@ -1,5 +1,6 @@
 #include <robotic_arm_controllers/robotic_arm_interface.hpp>
 #include <hardware_interface/types/hardware_interface_type_values.hpp>
+#include <pluginlib/class_list_macros.hpp> 
 
 namespace robotic_arm_controller
 { 
@@ -180,4 +181,6 @@ hardware_interface::return_type RoboticArmInterface::write(const rclcpp::Time & 
     return hardware_interface::return_type::OK;
 }
 }
+
+PLUGINLIB_EXPORT_CLASS(robotic_arm_controller::RoboticArmInterface, hardware_interface::SystemInterface); 
 

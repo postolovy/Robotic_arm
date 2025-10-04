@@ -11,6 +11,16 @@
 namespace robotic_arm_controller
 { 
 
+namespace
+{
+constexpr double kBaseStepsPerRad = 300.0 / (M_PI * 3.0);  // account for 1:3 pulley ratio
+constexpr double kShoulderNeutralDeg = 90.0;
+
+int clampDegrees(int value)
+{
+    return std::clamp(value, 0, 180);
+}
+
 std::string formatValue(int value)
 {
     std::ostringstream stream;
@@ -24,6 +34,22 @@ std::string formatValue(int value)
     }
     return stream.str();
 }
+
+int shoulderToServoDegrees(double radians)
+{
+    return clampDegrees(static_cast<int>(std::lround(kShoulderNeutralDeg - radians * 180.0 / M_PI)));
+}
+
+int elbowToServoDegrees(double radians)
+{
+    return clampDegrees(static_cast<int>(std::lround(radians * 360.0 / M_PI)));
+}
+
+int gripperToServoDegrees(double radians)
+{
+    return clampDegrees(static_cast<int>(std::lround(-radians * 360.0 / M_PI)));
+}
+} // namespace
 
 RoboticArmInterface::RoboticArmInterface()
 { 
@@ -155,25 +181,23 @@ hardware_interface::return_type RoboticArmInterface::write(const rclcpp::Time & 
 
     std::string msg; //example:: b043,s092,e030,g000 base, shoulder, elbow
 
-    int bicep_joint = static_cast<int>(std::round(position_commands_.at(0) * (300.0 / M_PI))); // In steps, stepper motor 1
+    int bicep_joint = static_cast<int>(std::lround(position_commands_.at(0) * kBaseStepsPerRad));
+    bicep_joint = std::clamp(bicep_joint, -999, 999);
     msg.append("b");
     msg.append(formatValue(bicep_joint));
     msg.append(",");
 
-    int arm1_joint = static_cast<int>(std::round(180.0 - (position_commands_.at(1) * 90.0))); // servo 1
-    arm1_joint = std::clamp(arm1_joint, 0, 180);
+    int arm1_joint = shoulderToServoDegrees(position_commands_.at(1));
     msg.append("s");
     msg.append(formatValue(arm1_joint));
     msg.append(",");
 
-    int arm2_joint = static_cast<int>(std::round(position_commands_.at(2) * 90.0)); // servo 2
-    arm2_joint = std::clamp(arm2_joint, 0, 180);
+    int arm2_joint = elbowToServoDegrees(position_commands_.at(2));
     msg.append("e");
     msg.append(formatValue(arm2_joint));
     msg.append(",");
 
-    int gripper = static_cast<int>(std::round(-position_commands_.at(3) * (180.0 / (M_PI / 2.0))));
-    gripper = std::clamp(gripper, 0, 180);
+    int gripper = gripperToServoDegrees(position_commands_.at(3));
     msg.append("g");
     msg.append(formatValue(gripper));
     msg.append(",");

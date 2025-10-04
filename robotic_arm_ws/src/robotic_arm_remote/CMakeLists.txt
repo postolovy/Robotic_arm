@@ -10,25 +10,27 @@ find_package(rclcpp REQUIRED)
 find_package(rclcpp_action REQUIRED)
 find_package(rclcpp_components REQUIRED)
 find_package(robotic_arm_msgs REQUIRED)
-find_package(trajectory_msgs REQUIRED)
+find_package(moveit_ros_planning_interface REQUIRED)
 
-add_library(task_servo SHARED src/task_servo.cpp)
-target_include_directories(task_servo PRIVATE
+add_library(task_server SHARED src/task_server.cpp)
+target_include_directories(task_server PRIVATE
   $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
   $<INSTALL_INTERFACE:include>)
-ament_target_dependencies(task_servo
+target_compile_definitions(task_server
+  PRIVATE "TASK_SERVER_CPP_BUILDING_DLL")
+ament_target_dependencies(task_server
   "robotic_arm_msgs"
   "rclcpp"
   "rclcpp_action"
   "rclcpp_components"
-  "trajectory_msgs")
-rclcpp_components_register_node(task_servo
-  PLUGIN "robotic_arm_remote::TaskServo"
-  EXECUTABLE task_servo_node
+  "moveit_ros_planning_interface")
+rclcpp_components_register_node(task_server
+  PLUGIN "robotic_arm_remote::TaskServer"
+  EXECUTABLE task_server_node
 )
 
 install(TARGETS
-  task_servo
+  task_server
   ARCHIVE DESTINATION lib
   LIBRARY DESTINATION lib
   RUNTIME DESTINATION lib

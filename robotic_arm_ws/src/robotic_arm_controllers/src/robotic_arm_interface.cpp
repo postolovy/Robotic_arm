@@ -1,21 +1,55 @@
 #include <robotic_arm_controllers/robotic_arm_interface.hpp>
 #include <hardware_interface/types/hardware_interface_type_values.hpp>
-#include <pluginlib/class_list_macros.hpp> 
+#include <pluginlib/class_list_macros.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <cstdlib>
+#include <iomanip>
+#include <sstream>
 
 namespace robotic_arm_controller
 { 
 
-std::string compensateZeros(int value)
-{ 
-    std::string compensate_zeros = ""; 
-    if(value < 10)
-    { 
-        compensate_zeros = "00"; 
-    } else if (value < 100){
-        compensate_zeros = "0";
-    } 
-    return compensate_zeros; 
+namespace
+{
+constexpr double kBaseStepsPerRad = 300.0 / M_PI;  // 180 deg (pi rad) -> 300 microsteps with 1:3 ratio
+constexpr double kShoulderNeutralDeg = 90.0;
+
+int clampDegrees(int value)
+{
+    return std::clamp(value, 0, 180);
 }
+
+std::string formatValue(int value)
+{
+    std::ostringstream stream;
+    if(value < 0)
+    {
+        stream << "-" << std::setw(3) << std::setfill('0') << std::abs(value);
+    }
+    else
+    {
+        stream << std::setw(3) << std::setfill('0') << value;
+    }
+    return stream.str();
+}
+
+int shoulderToServoDegrees(double radians)
+{
+    return clampDegrees(static_cast<int>(std::lround(kShoulderNeutralDeg - radians * 180.0 / M_PI)));
+}
+
+int elbowToServoDegrees(double radians)
+{
+    return clampDegrees(static_cast<int>(std::lround(radians * 360.0 / M_PI)));
+}
+
+int gripperToServoDegrees(double radians)
+{
+    return clampDegrees(static_cast<int>(std::lround(-radians * 360.0 / M_PI)));
+}
+} // namespace
 
 RoboticArmInterface::RoboticArmInterface()
 { 
@@ -146,25 +180,27 @@ hardware_interface::return_type RoboticArmInterface::write(const rclcpp::Time & 
     }
 
     std::string msg; //example:: b043,s092,e030,g000 base, shoulder, elbow
-    int bicep_joint = static_cast<int>(position_commands_.at(0) * (300 / M_PI)); // In angle(converted to steps), stepper motor 1
+
+    const double base_delta = position_commands_.at(0) - prev_position_commands_.at(0);
+    int base_steps = static_cast<int>(std::lround(base_delta * kBaseStepsPerRad));
+    base_steps = std::clamp(base_steps, -999, 999);
     msg.append("b");
-    msg.append(compensateZeros(bicep_joint));
-    msg.append(std::to_string(bicep_joint)); 
-    msg.append(","); 
-    int arm1_joint = 180 - static_cast<int>((position_commands_.at(1) * (M_PI / 2) * 180) / M_PI); //servo 1
+    msg.append(formatValue(base_steps));
+    msg.append(",");
+
+    int arm1_joint = shoulderToServoDegrees(position_commands_.at(1));
     msg.append("s");
-    msg.append(compensateZeros(arm1_joint)); 
-    msg.append(std::to_string(arm1_joint)); 
-    msg.append(","); 
-    int arm2_joint = static_cast<int>((position_commands_.at(2) * (M_PI / 2) * 180) / M_PI); //servo 2
+    msg.append(formatValue(arm1_joint));
+    msg.append(",");
+
+    int arm2_joint = elbowToServoDegrees(position_commands_.at(2));
     msg.append("e");
-    msg.append(compensateZeros(arm2_joint)); 
-    msg.append(std::to_string(arm2_joint)); 
-    msg.append(","); 
-    int gripper = static_cast<int>((-position_commands_.at(3) * 180) / (M_PI / 2)); 
+    msg.append(formatValue(arm2_joint));
+    msg.append(",");
+
+    int gripper = gripperToServoDegrees(position_commands_.at(3));
     msg.append("g");
-    msg.append(compensateZeros(gripper)); 
-    msg.append(std::to_string(gripper)); 
+    msg.append(formatValue(gripper));
     msg.append(",");
 
     try

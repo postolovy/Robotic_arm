@@ -17,13 +17,10 @@ Servo servoGripper;
 
 int8_t idx = -1;                 // 0=stepper, 1=shoulder, 2=elbow, 3=gripper
 uint8_t value_idx = 0;
-char value[4] = "000";           // up to 3 digits + null
+char value[5] = "";             // up to 3 digits + optional sign + null
 
 void resetValueBuf() {
-  value[0] = '0';
-  value[1] = '0';
-  value[2] = '0';
-  value[3] = '\0';
+  value[0] = '\0';
   value_idx = 0;
 }
 
@@ -98,9 +95,13 @@ void loop() {
     else if (idx == 3) moveServo(val, servoGripper);
     resetValueBuf();
   }
-  else if (isDigit(chr) && value_idx < 3) {
+  else if (chr == '-' && value_idx == 0) {
     value[value_idx++] = chr;
-    value[3] = '\0';
+    value[value_idx] = '\0';
+  }
+  else if (isDigit(chr) && value_idx < 4) {
+    value[value_idx++] = chr;
+    value[value_idx] = '\0';
   }
   // ignore any other characters
 }

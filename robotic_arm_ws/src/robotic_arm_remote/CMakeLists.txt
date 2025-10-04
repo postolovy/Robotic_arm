@@ -25,7 +25,7 @@ ament_target_dependencies(task_server
   "rclcpp_components"
   "moveit_ros_planning_interface")
 rclcpp_components_register_node(task_server
-  PLUGIN "robotic_arm_remote::TaskServer" 
+  PLUGIN "robotic_arm_remote::TaskServer"
   EXECUTABLE task_server_node
 )
 

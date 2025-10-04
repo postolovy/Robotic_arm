@@ -1,10 +1,11 @@
-import os
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
 from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 from moveit_configs_utils import MoveItConfigsBuilder
 from ament_index_python.packages import get_package_share_directory
+
+import os
 
 
 def generate_launch_description():
@@ -15,7 +16,6 @@ def generate_launch_description():
     )
 
     is_sim = LaunchConfiguration("is_sim")
-
 
     moveit_config = (
         MoveItConfigsBuilder("robotic_arm", package_name="robotic_arm_moveit")
@@ -38,7 +38,7 @@ def generate_launch_description():
                     {"use_sim_time": is_sim}]
     )
 
-    alexa_interface_node = Node( 
+    alexa_interface_node = Node(
         package="robotic_arm_remote",
         executable="alexa_interface.py",
         parameters=[{"use_sim_time": is_sim}]

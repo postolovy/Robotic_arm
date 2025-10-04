@@ -181,10 +181,11 @@ hardware_interface::return_type RoboticArmInterface::write(const rclcpp::Time & 
 
     std::string msg; //example:: b043,s092,e030,g000 base, shoulder, elbow
 
-    int bicep_joint = static_cast<int>(std::lround(position_commands_.at(0) * kBaseStepsPerRad));
-    bicep_joint = std::clamp(bicep_joint, -999, 999);
+    const double base_delta = position_commands_.at(0) - prev_position_commands_.at(0);
+    int base_steps = static_cast<int>(std::lround(base_delta * kBaseStepsPerRad));
+    base_steps = std::clamp(base_steps, -999, 999);
     msg.append("b");
-    msg.append(formatValue(bicep_joint));
+    msg.append(formatValue(base_steps));
     msg.append(",");
 
     int arm1_joint = shoulderToServoDegrees(position_commands_.at(1));

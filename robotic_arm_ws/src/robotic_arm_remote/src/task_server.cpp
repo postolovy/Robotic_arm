@@ -46,7 +46,7 @@ class TaskServer : public rclcpp::Node
 {
 public:
     explicit TaskServer(const rclcpp::NodeOptions& options = rclcpp::NodeOptions())
-    : Node("TaskServer", options)
+    : Node("task_server", options)
     {
         action_server_ = rclcpp_action::create_server<robotic_arm_msgs::action::RoboticArmTask>(
             this,

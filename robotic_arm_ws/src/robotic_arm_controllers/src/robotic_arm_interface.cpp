@@ -13,7 +13,7 @@ namespace robotic_arm_controller
 
 namespace
 {
-constexpr double kBaseStepsPerRad = 300.0 / (M_PI * 3.0);  // account for 1:3 pulley ratio
+constexpr double kBaseStepsPerRad = 300.0 / M_PI;  // 180 deg (pi rad) -> 300 microsteps with 1:3 ratio
 constexpr double kShoulderNeutralDeg = 90.0;
 
 int clampDegrees(int value)

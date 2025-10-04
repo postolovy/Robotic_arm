@@ -1,16 +1,33 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="robotic_arm_urdf">
 
-  <xacro:property name="PI" value="3.14159265359"/>
+
     
     <!-- Ros2 control plugin  -->
     <ros2_control type="system" name="RobotSystem">
-         <hardware> 
-            <plugin>gz_ros2_control/GazeboSimSystem</plugin>
-         </hardware>
-         <!-- <hardware>
-            Here will be another hardware tag for the real robot 
-         </hardware> -->
+
+        <xacro:property name="PI" value="3.14159265359"/>
+
+        <!-- ros2_control gazebo -->
+         <xacro:if value="$(arg is_sim)">
+            <hardware> 
+                <plugin>gz_ros2_control/GazeboSimSystem</plugin> <!--  Gazebo harware interface  -->
+            </hardware>
+
+            <joint name="rightClaw_joint">   
+                <param name="mimic">leftClaw_joint</param>
+                <param name="multiplier">-1</param>
+            </joint>
+         </xacro:if>
+
+         <!-- ros2_control real robot -->
+         <xacro:unless value="$(arg is_sim)">
+            <hardware>
+                <plugin>robotic_arm_controllers/RoboticArmInterface</plugin>
+                <param name="port">/dev/ttyUSB0</param>
+            </hardware>
+         </xacro:unless>
+         
 
         <joint name="bicep_joint">
             <command_interface name="position"> 
@@ -44,10 +61,7 @@
             <state_interface name="position"/>
         </joint>
 
-        <joint name="rightClaw_joint">   
-            <param name="mimic">leftClaw_joint</param>
-            <param name="multiplier">-1</param>
-        </joint>
+        
 
     </ros2_control> 
 

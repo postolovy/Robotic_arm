@@ -1,20 +1,28 @@
 #include <robotic_arm_controllers/robotic_arm_interface.hpp>
 #include <hardware_interface/types/hardware_interface_type_values.hpp>
-#include <pluginlib/class_list_macros.hpp> 
+#include <pluginlib/class_list_macros.hpp>
+
+#include <algorithm>
+#include <cmath>
+#include <cstdlib>
+#include <iomanip>
+#include <sstream>
 
 namespace robotic_arm_controller
 { 
 
-std::string compensateZeros(int value)
-{ 
-    std::string compensate_zeros = ""; 
-    if(value < 10)
-    { 
-        compensate_zeros = "00"; 
-    } else if (value < 100){
-        compensate_zeros = "0";
-    } 
-    return compensate_zeros; 
+std::string formatValue(int value)
+{
+    std::ostringstream stream;
+    if(value < 0)
+    {
+        stream << "-" << std::setw(3) << std::setfill('0') << std::abs(value);
+    }
+    else
+    {
+        stream << std::setw(3) << std::setfill('0') << value;
+    }
+    return stream.str();
 }
 
 RoboticArmInterface::RoboticArmInterface()
@@ -146,25 +154,28 @@ hardware_interface::return_type RoboticArmInterface::write(const rclcpp::Time & 
     }
 
     std::string msg; //example:: b043,s092,e030,g000 base, shoulder, elbow
-    int bicep_joint = static_cast<int>(position_commands_.at(0) * (300 / M_PI)); // In angle(converted to steps), stepper motor 1
+
+    int bicep_joint = static_cast<int>(std::round(position_commands_.at(0) * (300.0 / M_PI))); // In steps, stepper motor 1
     msg.append("b");
-    msg.append(compensateZeros(bicep_joint));
-    msg.append(std::to_string(bicep_joint)); 
-    msg.append(","); 
-    int arm1_joint = 180 - static_cast<int>((position_commands_.at(1) * (M_PI / 2) * 180) / M_PI); //servo 1
+    msg.append(formatValue(bicep_joint));
+    msg.append(",");
+
+    int arm1_joint = static_cast<int>(std::round(180.0 - (position_commands_.at(1) * 90.0))); // servo 1
+    arm1_joint = std::clamp(arm1_joint, 0, 180);
     msg.append("s");
-    msg.append(compensateZeros(arm1_joint)); 
-    msg.append(std::to_string(arm1_joint)); 
-    msg.append(","); 
-    int arm2_joint = static_cast<int>((position_commands_.at(2) * (M_PI / 2) * 180) / M_PI); //servo 2
+    msg.append(formatValue(arm1_joint));
+    msg.append(",");
+
+    int arm2_joint = static_cast<int>(std::round(position_commands_.at(2) * 90.0)); // servo 2
+    arm2_joint = std::clamp(arm2_joint, 0, 180);
     msg.append("e");
-    msg.append(compensateZeros(arm2_joint)); 
-    msg.append(std::to_string(arm2_joint)); 
-    msg.append(","); 
-    int gripper = static_cast<int>((-position_commands_.at(3) * 180) / (M_PI / 2)); 
+    msg.append(formatValue(arm2_joint));
+    msg.append(",");
+
+    int gripper = static_cast<int>(std::round(-position_commands_.at(3) * (180.0 / (M_PI / 2.0))));
+    gripper = std::clamp(gripper, 0, 180);
     msg.append("g");
-    msg.append(compensateZeros(gripper)); 
-    msg.append(std::to_string(gripper)); 
+    msg.append(formatValue(gripper));
     msg.append(",");
 
     try

@@ -13,13 +13,12 @@
   <depend>rclcpp_action</depend>
   <depend>rclcpp_components</depend>
   <depend>robotic_arm_msgs</depend>
-  <depend>moveit_ros_planning_interface</depend>
+  <depend>trajectory_msgs</depend>
 
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
 
   <exec_depend>ros2launch</exec_depend>
-  <exec_depend>robotic_arm_moveit</exec_depend>
 
   <export>
     <build_type>ament_cmake</build_type>

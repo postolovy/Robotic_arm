@@ -55,14 +55,9 @@ void loop() {
 
   //STEPPER 
   digitalWrite(dirPin,LOW); 
-  moveStepper(100); 
+  delayMicroseconds(20); 
+  moveStepper(180); 
   delay(1000);
-
-
-  // //STEPPER 
-  // digitalWrite(dirPin,HIGH); 
-  // moveStepper(110); 
-  // delay(1000);
 
 
 
@@ -95,28 +90,19 @@ void loop() {
 
   //STEPPER 
   digitalWrite(dirPin,HIGH); 
-  moveStepper(100); 
+  delayMicroseconds(20); 
+  moveStepper(180); 
   delay(10000);
 
-
-
-  // //STEPPER 
-  // digitalWrite(dirPin,LOW); 
-  // moveStepper(100); 
-  // delay(1000);
-
-  // //STEPPER 
-  // digitalWrite(dirPin,HIGH); 
-  // moveStepper(100); 
-  // delay(1000);
 }
 
-void moveStepper(int steps){  //dir - HIGH, LOW to change direction 
+void moveStepper(int angle){
+  int steps = 3*(angle/1.8);  //dir - HIGH, LOW to change direction 
   for(int i = 0; i < steps; i++){ 
     digitalWrite(stepPin, HIGH); 
-    delayMicroseconds(4500); 
+    delayMicroseconds(6000); 
     digitalWrite(stepPin, LOW); 
-    delayMicroseconds(4500);     
+    delayMicroseconds(6000);     
   }
 }
 

@@ -1,6 +1,8 @@
 #include <robotic_arm_controllers/robotic_arm_interface.hpp>
 #include <hardware_interface/types/hardware_interface_type_values.hpp>
 #include <pluginlib/class_list_macros.hpp> 
+#include <sstream>
+#include <cmath>
 
 namespace robotic_arm_controller
 { 
@@ -140,32 +142,47 @@ hardware_interface::return_type RoboticArmInterface::read(const rclcpp::Time & t
 
 hardware_interface::return_type RoboticArmInterface::write(const rclcpp::Time & time, const rclcpp::Duration & period)
 { 
+    std::ostringstream commands_stream;
+    commands_stream << "[";
+    for(size_t i = 0; i < position_commands_.size(); ++i)
+    {
+        commands_stream << position_commands_.at(i);
+        if(i + 1 < position_commands_.size())
+        {
+            commands_stream << ", ";
+        }
+    }
+    commands_stream << "]";
+    RCLCPP_INFO(rclcpp::get_logger("RoboticArmInterface"), "Current position commands: %s", commands_stream.str().c_str());
+
     if(position_commands_ == prev_position_commands_)
     { 
         return hardware_interface::return_type::OK; 
     }
 
     std::string msg; //example:: b043,s092,e030,g000 base, shoulder, elbow
-    int bicep_joint = static_cast<int>(position_commands_.at(0) * (300 / M_PI)); // In angle(converted to steps), stepper motor 1
+    int bicep_joint = static_cast<int>(std::lround(position_commands_.at(0) * (180.0 / M_PI) / 0.6)); // In angle(converted to steps), stepper motor 1
     msg.append("b");
     msg.append(compensateZeros(bicep_joint));
     msg.append(std::to_string(bicep_joint)); 
     msg.append(","); 
-    int arm1_joint = 180 - static_cast<int>((position_commands_.at(1) * (M_PI / 2) * 180) / M_PI); //servo 1
+    int arm1_joint = static_cast<int>(std::lround(position_commands_.at(1) * 180.0 / M_PI));
     msg.append("s");
     msg.append(compensateZeros(arm1_joint)); 
     msg.append(std::to_string(arm1_joint)); 
     msg.append(","); 
-    int arm2_joint = static_cast<int>((position_commands_.at(2) * (M_PI / 2) * 180) / M_PI); //servo 2
+    int arm2_joint = static_cast<int>(std::lround(position_commands_.at(2) * 180.0 / M_PI));
     msg.append("e");
     msg.append(compensateZeros(arm2_joint)); 
     msg.append(std::to_string(arm2_joint)); 
     msg.append(","); 
-    int gripper = static_cast<int>((-position_commands_.at(3) * 180) / (M_PI / 2)); 
+    int gripper = static_cast<int>(std::lround(position_commands_.at(3) * 180.0 / M_PI));
     msg.append("g");
     msg.append(compensateZeros(gripper)); 
     msg.append(std::to_string(gripper)); 
     msg.append(",");
+
+    RCLCPP_INFO_STREAM(rclcpp::get_logger("RoboticArmInterface"), "Commands: " << msg);
 
     try
     {

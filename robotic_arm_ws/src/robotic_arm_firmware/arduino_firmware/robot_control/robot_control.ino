@@ -93,9 +93,9 @@ void loop() {
   else if (chr == ',') {
     int val = atoi(value);
     if      (idx == 0) moveStepper(val);            // steps (can be signed)
-    else if (idx == 1) moveServo(val, servoShoulder);
-    else if (idx == 2) moveServo(val, servoElbow);
-    else if (idx == 3) moveServo(val, servoGripper);
+    else if (idx == 1) moveServo(abs(val), servoShoulder);
+    else if (idx == 2) moveServo(abs(val), servoElbow);
+    else if (idx == 3) moveServo(abs(val), servoGripper);
     resetValueBuf();
   }
   else if (isDigit(chr) && value_idx < 3) {

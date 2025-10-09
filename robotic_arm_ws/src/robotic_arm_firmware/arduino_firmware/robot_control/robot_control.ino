@@ -17,13 +17,10 @@ Servo servoGripper;
 
 int8_t idx = -1;                 // 0=stepper, 1=shoulder, 2=elbow, 3=gripper
 uint8_t value_idx = 0;
-char value[4] = "000";           // up to 3 digits + null
+char value[6] = "";             // optional sign + up to 4 digits + null terminator
 
 void resetValueBuf() {
-  value[0] = '0';
-  value[1] = '0';
-  value[2] = '0';
-  value[3] = '\0';
+  value[0] = '\0';
   value_idx = 0;
 }
 
@@ -91,16 +88,22 @@ void loop() {
   else if (chr == 'e') { idx = 2; resetValueBuf(); }
   else if (chr == 'g') { idx = 3; resetValueBuf(); }
   else if (chr == ',') {
-    int val = atoi(value);
-    if      (idx == 0) moveStepper(val);            // steps (can be signed)
-    else if (idx == 1) moveServo(abs(val), servoShoulder);
-    else if (idx == 2) moveServo(abs(val), servoElbow);
-    else if (idx == 3) moveServo(abs(val), servoGripper);
+    if (idx >= 0) {
+      int val = atoi(value);
+      if      (idx == 0) moveStepper(val);            // steps (can be signed)
+      else if (idx == 1) moveServo(abs(val), servoShoulder);
+      else if (idx == 2) moveServo(abs(val), servoElbow);
+      else if (idx == 3) moveServo(abs(val), servoGripper);
+    }
     resetValueBuf();
   }
-  else if (isDigit(chr) && value_idx < 3) {
+  else if (chr == '-' && value_idx == 0) {
     value[value_idx++] = chr;
-    value[3] = '\0';
+    value[value_idx] = '\0';
+  }
+  else if (isDigit(chr) && value_idx < 5) {
+    value[value_idx++] = chr;
+    value[value_idx] = '\0';
   }
   // ignore any other characters
 }

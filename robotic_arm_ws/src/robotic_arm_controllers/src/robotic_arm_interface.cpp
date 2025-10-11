@@ -19,6 +19,19 @@ std::string compensateZeros(int value)
     return compensate_zeros; 
 }
 
+std::string formatStepperSteps(int steps)
+{ 
+    std::ostringstream formatted_steps;
+    if(steps < 0)
+    { 
+        formatted_steps << "-"; 
+        steps = - steps; 
+    }
+
+    formatted_steps << std::setw(3) << std::setfill('0') << steps; 
+    return formatted_steps.str(); 
+}
+
 RoboticArmInterface::RoboticArmInterface()
 { 
 
@@ -161,7 +174,11 @@ hardware_interface::return_type RoboticArmInterface::write(const rclcpp::Time & 
     }
 
     std::string msg; //example:: b043,s092,e030,g000 base, shoulder, elbow
-    int bicep_joint = static_cast<int>(std::lround(position_commands_.at(0) * (180.0 / M_PI) / 0.6)); // In angle(converted to steps), stepper motor 1 // change it !!!!
+    constexpr double radians_to_steps = 180 / M_PI / 0.6; 
+    const int current_bicep_steps = static_cast<int>(std::lround(position_commands_.at(0) * radians_to_steps)); 
+    const int prevoius_bicep_steps = static_cast<int>(std::lround(prev_position_commands_.at(0) * radians_to_steps)); 
+    
+    const int bicep_joint = current_bicep_steps - prevoius_bicep_steps; // In angle(converted to steps), stepper motor 1
     msg.append("b");
     msg.append(compensateZeros(bicep_joint));
     msg.append(std::to_string(bicep_joint)); 

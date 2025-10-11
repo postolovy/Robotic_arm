@@ -61,18 +61,19 @@ void moveStepper(int steps) {
 
 void moveServo(int goal, Servo &motor) {
   int current = motor.read();
+  
   if (goal > 180) goal = 180;
   if (goal < 0)   goal = 0;
 
   if (goal >= current) {
     for (int pos = current; pos <= goal; pos++) {
       motor.write(pos);
-      delay(10);
+      // delay(10);
     }
   } else {
     for (int pos = current; pos >= goal; pos--) {
       motor.write(pos);
-      delay(10);
+      // delay(10);
     }
   }
 }

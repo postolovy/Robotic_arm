@@ -161,22 +161,22 @@ hardware_interface::return_type RoboticArmInterface::write(const rclcpp::Time & 
     }
 
     std::string msg; //example:: b043,s092,e030,g000 base, shoulder, elbow
-    int bicep_joint = static_cast<int>(std::lround(position_commands_.at(0) * (180.0 / M_PI) / 0.6)); // In angle(converted to steps), stepper motor 1
+    int bicep_joint = static_cast<int>(std::lround(position_commands_.at(0) * (180.0 / M_PI) / 0.6)); // In angle(converted to steps), stepper motor 1 // change it !!!!
     msg.append("b");
     msg.append(compensateZeros(bicep_joint));
     msg.append(std::to_string(bicep_joint)); 
     msg.append(","); 
-    int arm1_joint = static_cast<int>(std::lround(position_commands_.at(1) * 180.0 / M_PI));
+    int arm1_joint = 90 - static_cast<int>(std::lround(position_commands_.at(1) * 180.0 / M_PI));
     msg.append("s");
     msg.append(compensateZeros(arm1_joint)); 
     msg.append(std::to_string(arm1_joint)); 
     msg.append(","); 
-    int arm2_joint = static_cast<int>(std::lround(position_commands_.at(2) * 180.0 / M_PI));
+    int arm2_joint = 90 + static_cast<int>(std::lround(position_commands_.at(2) * 180.0 / M_PI));
     msg.append("e");
     msg.append(compensateZeros(arm2_joint)); 
     msg.append(std::to_string(arm2_joint)); 
     msg.append(","); 
-    int gripper = static_cast<int>(std::lround(position_commands_.at(3) * 180.0 / M_PI));
+    int gripper = 90 + static_cast<int>(std::lround(position_commands_.at(3) * 180.0 / M_PI));
     msg.append("g");
     msg.append(compensateZeros(gripper)); 
     msg.append(std::to_string(gripper)); 

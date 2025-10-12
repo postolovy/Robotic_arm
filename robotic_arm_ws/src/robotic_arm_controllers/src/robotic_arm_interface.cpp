@@ -179,7 +179,7 @@ hardware_interface::return_type RoboticArmInterface::write(const rclcpp::Time & 
     const int current_bicep_steps = static_cast<int>(std::lround(position_commands_.at(0) * radians_to_steps)); 
     const int prevoius_bicep_steps = static_cast<int>(std::lround(prev_position_commands_.at(0) * radians_to_steps)); 
     
-    const int bicep_joint = current_bicep_steps - prevoius_bicep_steps; // In angle(converted to steps), stepper motor 1
+    const int bicep_joint = prevoius_bicep_steps - current_bicep_steps; // In angle(converted to steps), stepper motor 1
     msg.append("b");
     msg.append(formatStepperSteps(bicep_joint));
     msg.append(","); 

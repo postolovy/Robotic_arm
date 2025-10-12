@@ -180,7 +180,7 @@ hardware_interface::return_type RoboticArmInterface::write(const rclcpp::Time & 
     
     const int bicep_joint = current_bicep_steps - prevoius_bicep_steps; // In angle(converted to steps), stepper motor 1
     msg.append("b");
-    msg.append(compensateZeros(bicep_joint));
+    msg.append(formatStepperSteps(bicep_joint));
     msg.append(std::to_string(bicep_joint)); 
     msg.append(","); 
     int arm1_joint = 90 - static_cast<int>(std::lround(position_commands_.at(1) * 180.0 / M_PI));
